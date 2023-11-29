@@ -29,11 +29,25 @@ export class MycrudeService {
 
   }    
 
-  // get all data from database
-  async getAll(): Promise<Main[]> {
-    return this.mainRepository.createQueryBuilder("main").getMany();
-  }
+  // get all data from database both master table
+  async getAll(): Promise<{
+    main: Main[];
+  }> {
+    const mainData = await this.mainRepository
+      .createQueryBuilder("main")
+      .getMany();
 
+    return { main: mainData };
+  }
+  
+
+  async getMasterData(): Promise<{ heroes: { id: number; name: string }[]; heroines: { id: number; name: string }[] }> {
+    const heroes = await this.heroRepository.find({ select: ['id', 'name'] });
+    const heroines = await this.heroineRepository.find({ select: ['id', 'name'] });
+
+    return { heroes, heroines };
+  }
+ 
   // create(MainDTO: mainDTO) {
   //   return 'This action adds a new mycrude';
   // }

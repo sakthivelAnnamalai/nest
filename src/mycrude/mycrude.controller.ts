@@ -65,6 +65,22 @@ export class MycrudeController {
     }
   }
 
+  @Get("getMasterData")
+  async getMasterData(@Req() req, @Res() res) {
+    try {
+      const masterData = await this.mycrudeService.getMasterData();
+      res.status(HttpStatus.OK).json({
+        message: "Master data retrieved successfully",
+        data: masterData,
+      });
+    } catch (err) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        message: "Something went wrong",
+        error: err,
+      });
+    }
+  }
+
   // @Get()
   // findAll() {
   //   return this.mycrudeService.findAll();
