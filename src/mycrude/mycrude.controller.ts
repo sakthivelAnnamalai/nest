@@ -3,6 +3,7 @@ import { MycrudeService } from "./mycrude.service";
 import { mainDTO } from './dto/create-mycrude.dto';
 import { UpdateMycrudeDto } from './dto/update-mycrude.dto';
 import {Request,Response} from 'express'
+import { Any } from 'typeorm';
 
 @Controller("mycrude")
 export class MycrudeController {
@@ -26,9 +27,43 @@ export class MycrudeController {
     })
     
   }
-}
+} 
 
+//  this api is get by movie name
+  @Get("getbyId/:id")
+  async getbyId(@Req() req: Request, @Res() res: Response, @Param("id") id:number) {
+    try {
+      const d = await this.mycrudeService.getbyId(id);
+      res.status(HttpStatus.OK).json({
+        message: "this is the data ",
+        datas: d,
+      });
+      return d;
+    } catch (err) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        message: "somthing went wrong",
+        errro: err,
+      });
+    }
+  }
 
+  //  get all data
+  @Get("getAll")
+  async getAll(@Req() req: Request, @Res() res: Response) {
+    try {
+      const data = await this.mycrudeService.getAll();
+      res.status(HttpStatus.OK).json({
+        message: "Data retrieved successfully",
+        datas: data,
+      });
+      return data;
+    } catch (err) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        message: "Something went wrong",
+        error: err,
+      });
+    }
+  }
 
   // @Get()
   // findAll() {

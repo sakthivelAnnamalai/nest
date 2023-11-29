@@ -33,4 +33,8 @@ export class mainDTO {
   @IsNumber()
   @Min(0)
   rating: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  id: number;
 }

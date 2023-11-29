@@ -13,15 +13,27 @@ export class MycrudeService {
     @InjectRepository(Main) private readonly mainRepository: Repository<Main>,
   ) {}
 
+  // add movie details here
   create(data) {
     return this.mainRepository.save(data);
   }
 
 
+  // get data by id
+  async getbyId(id: number): Promise<Main> {
+    const main = await this.mainRepository
+      .createQueryBuilder('main')
+      .where('main.id = :id', { id })
+      .getOne();
+      return main;
 
-  // getbyId('getbyId'){
-  //   return this.mainRepository.findOne()
-  // }
+  }    
+
+  // get all data from database
+  async getAll(): Promise<Main[]> {
+    return this.mainRepository.createQueryBuilder("main").getMany();
+  }
+
   // create(MainDTO: mainDTO) {
   //   return 'This action adds a new mycrude';
   // }
