@@ -4,6 +4,8 @@ import { UpdateMycrudeDto } from "./dto/update-mycrude.dto";
 import { Main, Hero, Heroine } from "./entities/mycrude.entity";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
+
+
 @Injectable()
 export class MycrudeService {
   constructor(
@@ -11,6 +13,7 @@ export class MycrudeService {
     @InjectRepository(Heroine)
     private readonly heroineRepository: Repository<Heroine>,
     @InjectRepository(Main) private readonly mainRepository: Repository<Main>,
+    
   ) {}
 
   // add movie details here
@@ -30,11 +33,21 @@ export class MycrudeService {
   }    
 
   // get all data from database both master table
-  async getAll(){
+  async getAll() {
     const mainData = await this.mainRepository
-      .createQueryBuilder("main")
-      .getMany();
-
+      .createQueryBuilder('m')
+      .select([
+        'm.id as id',
+        'hero.name as hero',
+        'heroine.name as heroine',
+        'm.rDate as rDate',
+        'm.collection',
+        'm.rating as rating'
+      ])
+      .leftJoin('m.heroId', 'hero') // Corrected 'heroId'
+      .leftJoin('m.heroineId', 'heroine') // Corrected 'heroineId'
+      .execute();
+  
     return mainData;
   }
   
@@ -47,8 +60,14 @@ export class MycrudeService {
 
     return { heroes, heroines };
   }
-
-
+  // async sendMail(to: string, subject: string, text: string) {
+  //   await this.mailServ.sendMail({
+  //     to,
+  //     subject,
+  //     text
+  //   });
+  // }
+  
   // update by id
 
   

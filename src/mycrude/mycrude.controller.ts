@@ -7,7 +7,7 @@ import { Any } from 'typeorm';
 
 @Controller("mycrude")
 export class MycrudeController {
-  constructor(private readonly mycrudeService: MycrudeService) {}
+  constructor(private readonly mycrudeService: MycrudeService,) {}
 
   @Post("create")
   async create(@Req() req: Request, @Res() res: Response, @Body() data: mainDTO) {
@@ -80,6 +80,17 @@ export class MycrudeController {
       });
     }
   }
+
+
+
+
+
+//   @Post()
+// async sendMail(@Body() mailData: { to: string, subject: string, text: string }) {
+//     await this.mailServ.sendMail(mailData.to, mailData.subject, mailData.text);
+//     return { message: 'Mail sent successfully' };
+//   }
+
 
   // update by id
   // @Put("updateById/:id")
